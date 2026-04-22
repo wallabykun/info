@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ワラビーズのワ！ とくべつごう</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap');
+
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic Pro', 'Yu Gothic', sans-serif;
+    background: #e8ded1;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  /* ペンで描いたような少し歪んだ外枠 */
+  .page {
+    width: 794px;
+    height: 1123px;
+    background: #fffcf7;
+    border: 4px solid #333;
+    border-radius: 2% 3% 2% 4% / 3% 2% 4% 2%; 
+    overflow: hidden;
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* ============ ヘッダー ============ */
+  .header {
+    text-align: center;
+    padding: 15px 20px 5px;
+    flex-shrink: 0;
+    border-bottom: 3px solid #333;
+    border-radius: 0 0 1% 2% / 0 0 2% 1%;
+    background-image: radial-gradient(#f4e3c5 20%, transparent 20%);
+    background-size: 10px 10px;
+  }
+
+  .header img {
+    max-width: 100%;
+    height: auto;
+    max-height: 85px;
+    filter: drop-shadow(2px 2px 0 #fff) drop-shadow(-2px -2px 0 #fff) drop-shadow(4px 4px 0 rgba(0,0,0,0.1));
+  }
+
+  /* ============ メインコンテンツ ============ */
+  .content {
+    display: flex;
+    flex: 1;
+    padding: 20px 18px 10px;
+    gap: 20px;
+    min-height: 0;
+  }
+
+  /* --- 左カラム --- */
+  .col-left {
+    flex: 0 0 330px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    min-height: 0;
+  }
+
+  .main-illust {
+    flex-shrink: 0;
+  }
+
+  .main-illust img {
+    width: 320px;
+    height: auto;
+  }
+
+  .koma-area {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .koma-area img {
+    width: 310px;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* --- 右カラム --- */
+  .col-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  /* メッセージ（手描き風の歪んだ枠） */
+  .message-section {
+    background: #fff;
+    border: 3.5px solid #333;
+    border-radius: 15px 5px 15px 5px / 5px 15px 5px 15px;
+    padding: 16px 20px;
+    margin-bottom: 18px;
+    box-shadow: 4px 4px 0 #5ba4d9;
+    position: relative;
+  }
+
+  .message-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: #333;
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  .message-title span {
+    background: linear-gradient(transparent 60%, #ffcc00 60%);
+    padding: 0 5px;
+  }
+
+  .message-text {
+    font-size: 11.5px;
+    line-height: 1.85;
+    color: #333;
+    font-weight: 500;
+  }
+
+  .message-text p {
+    margin-bottom: 8px;
+  }
+
+  .message-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  .highlight {
+    background: linear-gradient(transparent 60%, #ffbaba 60%);
+    font-weight: 900;
+    padding: 0 3px;
+  }
+
+  /* 情報エリア */
+  .info-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .info-group {
+    padding: 0 5px;
+  }
+
+  .info-group-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    font-weight: 900;
+    padding: 4px 14px;
+    border: 2px solid #333;
+    border-radius: 20px 8px 20px 8px / 8px 20px 8px 20px;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+    color: #333;
+    box-shadow: 2px 2px 0 #333;
+  }
+
+  .info-group-title.change { background: #ffcc00; }
+  .info-group-title.same { background: #82d39b; }
+
+  .info-items {
+    padding-left: 10px;
+    border-left: 3px dashed #d0c8b8;
+    margin-left: 10px;
+  }
+
+  .info-item-title {
+    font-size: 12px;
+    font-weight: 900;
+    color: #333;
+    margin-bottom: 2px;
+  }
+
+  .info-item-title::before {
+    content: '★';
+    color: #e85d3a;
+    margin-right: 4px;
+    font-size: 10px;
+  }
+
+  .info-item-text {
+    font-size: 10.5px;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 8px;
+    padding-left: 16px;
+    font-weight: 500;
+  }
+
+  .info-item-text:last-child {
+    margin-bottom: 0;
+  }
+
+  /* スケジュール（コアラさんのレポート風の枠） */
+  .schedule-section {
+    background: #fbf5e6;
+    border: 3px solid #333;
+    border-radius: 5px 15px 5px 15px / 15px 5px 15px 5px;
+    padding: 12px 16px;
+    margin-bottom: 15px;
+    box-shadow: 4px 4px 0 #e8a84c;
+  }
+
+  .schedule-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: #333;
+    margin-bottom: 8px;
+    display: inline-block;
+    border-bottom: 2px solid #e8a84c;
+  }
+
+  .schedule-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 11.5px;
+    line-height: 1.8;
+    color: #333;
+    font-weight: 700;
+  }
+
+  .schedule-month {
+    min-width: 45px;
+    white-space: nowrap;
+    color: #e85d3a;
+    font-size: 13px;
+  }
+
+  .schedule-note {
+    font-size: 10px;
+    color: #666;
+    margin-top: 5px;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+
+  /* 連絡先 — 切り取り線風 */
+  .contact-section {
+    margin-top: auto;
+    border-top: 3px dashed #aaa;
+    padding-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+  }
+
+  .contact-section::before {
+    content: '✂';
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    font-size: 16px;
+    color: #aaa;
+    background: #fffcf7;
+    padding: 0 4px;
+  }
+
+  .contact-qr img {
+    width: 70px;
+    height: 70px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    box-shadow: 2px 2px 0 #ccc;
+  }
+
+  .contact-info {
+    flex: 1;
+  }
+
+  .contact-label {
+    font-size: 12px;
+    font-weight: 900;
+    color: #333;
+    margin-bottom: 4px;
+    background: #d4eaf7;
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .contact-row {
+    font-size: 11px;
+    line-height: 1.7;
+    color: #333;
+    font-weight: 700;
+  }
+
+  /* ============ フッター ============ */
+  .footer {
+    text-align: right;
+    padding: 5px 20px 10px;
+    font-size: 10px;
+    color: #999;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ============ スマホ用 ============ */
+  @media screen and (max-width: 768px) {
+    body {
+      padding: 0;
+      background: #fffcf7;
+    }
+
+    .page {
+      width: 100%;
+      height: auto;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .header {
+      padding: 12px 16px 6px;
+    }
+
+    .header img {
+      max-height: 55px;
+    }
+
+    .content {
+      flex-direction: column;
+      padding: 16px 16px 10px;
+      gap: 16px;
+    }
+
+    /* カラムを解体して中身をフラットに */
+    .col-left,
+    .col-right {
+      display: contents;
+    }
+
+    /* 並び順を指定 */
+    .main-illust    { order: 1; }
+    .message-section { order: 2; }
+    .info-section    { order: 3; }
+    .schedule-section { order: 4; }
+    .koma-area       { order: 5; }
+    .contact-section { order: 6; }
+
+    /* イラスト */
+    .main-illust {
+      text-align: center;
+    }
+
+    .main-illust img {
+      width: 70%;
+      max-width: 300px;
+    }
+
+    /* 4コマ */
+    .koma-area {
+      justify-content: center;
+      flex: none;
+    }
+
+    .koma-area img {
+      width: 65%;
+      max-width: 280px;
+      max-height: none;
+    }
+
+    /* メッセージ */
+    .message-section {
+      padding: 14px 16px;
+      margin-bottom: 0;
+    }
+
+    .message-title {
+      font-size: 15px;
+    }
+
+    .message-text {
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    /* 情報セクション */
+    .info-section {
+      margin-bottom: 0;
+      gap: 14px;
+    }
+
+    .info-group-title {
+      font-size: 15px;
+    }
+
+    .info-item-title {
+      font-size: 13px;
+    }
+
+    .info-item-text {
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    /* スケジュール */
+    .schedule-section {
+      margin-bottom: 0;
+    }
+
+    .schedule-title {
+      font-size: 15px;
+    }
+
+    .schedule-row {
+      font-size: 13px;
+    }
+
+    .schedule-note {
+      font-size: 11px;
+    }
+
+    /* 連絡先 */
+    .contact-section {
+      margin-top: 0;
+      padding-top: 16px;
+    }
+
+    .contact-qr img {
+      width: 80px;
+      height: 80px;
+    }
+
+    .contact-label {
+      font-size: 13px;
+    }
+
+    .contact-row {
+      font-size: 12px;
+    }
+
+    /* フッター */
+    .footer {
+      text-align: center;
+      padding: 10px 16px 16px;
+      font-size: 11px;
+    }
+  }
+
+  /* ============ 印刷用 ============ */
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page {
+      width: 100%; height: auto;
+      border: none; border-radius: 0; box-shadow: none; background: #fff;
+    }
+    .header { background-image: none; border-bottom: 2px solid #333; }
+    @page { size: A4; margin: 8mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <img src="images/tokutitle.jpg" alt="スタンプウォーキング ワラビーズのワ！ とくべつごう">
+  </div>
+
+  <div class="content">
+
+    <div class="col-left">
+      <div class="main-illust">
+        <img src="images/tokumain.png" alt="ワラビーくん">
+      </div>
+      <div class="koma-area">
+        <img src="images/toku4koma.png" alt="ワラビーくん⑮ りゅっく">
+      </div>
+    </div>
+
+    <div class="col-right">
+
+      <div class="message-section">
+        <div class="message-title"><span>🎒 ワラビーズからの大切なお知らせ</span></div>
+        <div class="message-text">
+          <p>いつもご参加とご協力いただき、本当にありがとうございます。<br>
+          この秋から、ワラビーズは<span class="highlight">新しい道を歩き始めます。</span></p>
+          <p>これまでお世話になったTOPOから独立し、<br>
+          <span class="highlight">9月より新しいかたちでリニューアルスタート</span>することになりました。</p>
+          <p>「みんなで楽しく歩く」「スタンプカード」「美味しいおやつ」<br>
+          そんないつものスタイルはそのままです。</p>
+          <p>新しい靴で一歩を踏み出すようなワクワクした気持ちで、<br>
+          これからも皆さんと楽しい時間を重ねていけたらと思っています。<br>
+          新しくなるワラビーズを、これからもよろしくお願いいたします！</p>
+        </div>
+      </div>
+
+      <div class="info-section">
+
+        <div class="info-group">
+          <div class="info-group-title change">🔄 変わること</div>
+          <div class="info-items">
+            <div class="info-item-title">オープンイベントになります</div>
+            <div class="info-item-text">これまではTOPO利用会員のみ参加でしたが、9月からは会員登録なしでどなたでも参加いただけます。新しい仲間も大歓迎！</div>
+            <div class="info-item-title">ワ！の配布方法が変わります</div>
+            <div class="info-item-text">今後はLINEやメールでの配信が中心になります。<br>
+            <span style="font-size:9.5px;color:#888;">（※移行期間中や希望される方には郵送も検討しています）</span></div>
+          </div>
+        </div>
+
+        <div class="info-group">
+          <div class="info-group-title same">✅ 変わらないこと</div>
+          <div class="info-items">
+            <div class="info-item-title">活動内容はこれまで通り</div>
+            <div class="info-item-text">ウォーキング、スタンプカード、おやつタイム — 変わりません。</div>
+            <div class="info-item-title">参加費もそのまま</div>
+            <div class="info-item-text">参加者 1,500円（おやつ込み）／ 保護者 500円</div>
+            <div class="info-item-title">申し込み方法も同じ</div>
+            <div class="info-item-text">ニシヨリのLINEまたはメールでお申し込みください。</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="schedule-section">
+        <div class="schedule-title">📅 今後の予定</div>
+        <div class="schedule-row">
+          <span class="schedule-month">5月</span>
+          <span>→ TOPOでの最後の開催（5/23 須磨離宮公園）</span>
+        </div>
+        <div class="schedule-row">
+          <span class="schedule-month">6〜8月</span>
+          <span>→ 夏休み＆準備期間</span>
+        </div>
+        <div class="schedule-row">
+          <span class="schedule-month">9月</span>
+          <span>→ <strong>リニューアル再開！ 🎉</strong></span>
+        </div>
+        <p class="schedule-note">※ 9月号のワ！は8月に配布します。届いたらぜひチェックしてくださいね！</p>
+      </div>
+
+      <div class="contact-section">
+        <div class="contact-qr">
+          <img src="images/qr_line.jpg" alt="LINE QRコード">
+        </div>
+        <div class="contact-info">
+          <div class="contact-label">📮 参加申し込み・お問い合わせ</div>
+          <div class="contact-row">📱 ニシヨリ LINE（QRコードから友だち追加）</div>
+          <div class="contact-row">✉️ tomonisiyo@gmail.com</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    スタンプウォーキング ワラビーズのワ！ とくべつごう ／ 2026
+  </div>
+
+</div>
+
+</body>
+</html>
